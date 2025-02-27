@@ -4,6 +4,7 @@ import { createHandler } from 'graphql-http/lib/use/express'
 import authController from './modules/auth/auth.controller.js'
 import userController from './modules/user/user.controller.js'
 import companyController from './modules/company/company.controller.js'
+import playground from 'graphql-playground-middleware-express'
 import appController from './modules/App/app.controller.js'
 import chatController from './modules/chat/chat.controller.js'
 import cors from 'cors'
@@ -33,7 +34,7 @@ const bootstrap = (app, express) => {
     app.use('/auth',authlimiter)
     
     
-
+    app.get("/palyGround", playground.default({endpoint:"/graphql"}))
     app.use('/graphql', createHandler({ schema}))
 
     app.get("/", (req, res, next) => {

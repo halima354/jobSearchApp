@@ -24,6 +24,6 @@ export const banUser = {
         throw new Error("not found")
     }
     const updateUser =  await userModel.updateOne({_id}, data)
-    return {message: "done", statusCode: 200, data: updateUser }
+    return {message: "done", statusCode: 200, data: {updateUser} }
     }
 } 
