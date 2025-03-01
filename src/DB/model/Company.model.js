@@ -30,7 +30,7 @@ const companySchema = new Schema({
         default: false
     },
     userId:{type: Types.ObjectId , ref: "User", required:true},
-    userInfo:{type: Types.ObjectId , ref: "User", required:true},
+    userInfo:{type: Types.ObjectId , ref: "User"},
     logo:{ secure_url: String , public_id: String },
     legalAttachment: { secure_url: String, public_id: String },
     coverPic:[ {secure_url: String , public_id: String} ],

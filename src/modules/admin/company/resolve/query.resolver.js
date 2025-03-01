@@ -15,7 +15,10 @@ export const companyListList = {
         await authorization({role: user.role , accessRoles:[roleTypes.admin]})
         const companyList = await DBservice.findAll({
             model: companyModel,
-            populate:{path : "userInfo"}
+            populate:[
+                {path : "userInfo" },
+                { path: "HRS" }
+            ]
         })
     return {message:"done", statusCode:200, data: companyList}
     }

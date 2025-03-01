@@ -25,7 +25,7 @@ export const companyType=  new GraphQLObjectType({
         createdAt:{type:GraphQLString},
         updatedAt:{type:GraphQLString},
         approvedByAdmin:{type:GraphQLBoolean},
-        HRS:{type: new GraphQLList(GraphQLID)},
+        HRS:{type: new GraphQLList(userType)},
         logo:{type: imageType},
         coverPic:{type: new GraphQLList(imageType)},
         legalAttachment:{type: imageType }
