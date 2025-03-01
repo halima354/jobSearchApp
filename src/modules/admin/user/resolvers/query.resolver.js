@@ -1,25 +1,21 @@
-import { GraphQLID } from "graphql"
+import { GraphQLNonNull, GraphQLEnumType, GraphQLString} from "graphql"
 import userModel from "../../../../DB/model/User.model.js"
+import { authorization ,authentication } from "../../../../middleware/auth.graph.middleware.js"
+import { roleTypes } from "../../../../DB/model/User.model.js"
 import  * as  userType  from "../types/user.type.js"
 export const userList = {
     type: userType.userListResponse,
+    args:{
+        token:{type: new GraphQLNonNull(GraphQLString)},
+        },
     resolve: async(parent, args)=>{
-        const user= await userModel.find()
-    return {message:"done", statusCode:200, data: user}
+        const {token} = args
+        const user = await authentication( {authorization: token})
+            console.log('Authenticated User:', user);
+            await authorization({role : user.role, accessRoles:[roleTypes.admin]})
+        const userList= await userModel.find()
+    return {message:"done", statusCode:200, data: userList}
     }
 }
-// export const getUser ={
-//     type: userType.getUserResponse,
-//     args:{
-//         _id:{type: GraphQLID}
-//     },
-//     resolve: async(parent, args) =>{
-//         const {_id}= args
-//         const user = await userModel.findById(_id)
-//         if (!user) {
-//             throw new Error("not found account id");
-//         }
-//         return{message:"done", statusCode: 200, data:user}
-//     }
-// }
+
 

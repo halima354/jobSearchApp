@@ -1,5 +1,11 @@
-import { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList, GraphQLID, GraphQLScalarType, GraphQLBoolean } from "graphql";
-
+import { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList, GraphQLID, GraphQLEnumType, GraphQLBoolean } from "graphql";
+import { roleTypes } from "../../../../DB/model/User.model.js";
+const roleType= new GraphQLEnumType({
+    name: "roleTypes",
+    values: {
+    user:{  value: roleTypes.user} ,
+    admin:{ value: roleTypes.admin} 
+}})
 export const userType=  new GraphQLObjectType({
     name :"Users",
     fields:{
@@ -10,7 +16,7 @@ export const userType=  new GraphQLObjectType({
         password:{type:GraphQLString},
         phone:{type:GraphQLString},
         gender:{type:GraphQLString},
-        role:{type:GraphQLString},
+        role: {type: roleType},
         DOB:{type: GraphQLString},
         isDeleted:{type: GraphQLBoolean},
         confirmEmail:{type:GraphQLBoolean},
@@ -44,14 +50,6 @@ export const banUserResponse= new GraphQLObjectType({
 })
 
 
-// export const getUser=  userType
-// export const getUserResponse= new GraphQLObjectType({
-//     name:"getUserResponse",
-//     fields:{
-//         message:{type: GraphQLString},
-//         statusCode:{type: GraphQLString},
-//         data:{type: getUser}
-//     }
-// })
+
 
 

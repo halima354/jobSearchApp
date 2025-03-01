@@ -1,6 +1,7 @@
 import { GraphQLEnumType, GraphQLID, GraphQLNonNull, GraphQLString } from "graphql";
 import userModel from "../../../../DB/model/User.model.js";
-import { authentication } from "../../../../middleware/auth.graph.middleware.js";
+import { authentication , authorization } from "../../../../middleware/auth.graph.middleware.js";
+import { roleTypes } from "../../../../DB/model/User.model.js";
 import * as userType from "../types/user.type.js";
 
 export const banUser = {
@@ -13,17 +14,22 @@ export const banUser = {
             values: {
             ban:{  value: "ban"} ,
             unBan:{ value: "unBan"} }
-            }))}
+            }))},
     },
     resolve:async(parent, args) =>{
     const {_id, token , action}= args
-    const user = authentication( {authorization: token})
-    //await authorization({role : user.role, accessRoles:[roleTypes.user]})
+    const user = await authentication( {authorization: token})
+    console.log('Authenticated User:', user);
+    await authorization({role : user.role, accessRoles:[roleTypes.admin]})
     const data = action === "ban"? {$set:{bannedAt: Date.now()}} : {$unset:{bannedAt:0}}
-    if (!await userModel.findById(_id)) {
-        throw new Error("not found")
+    const findUser = await userModel.findById(_id)
+    if (!findUser) {
+        throw new Error("not found this user")
     }
-    const updateUser =  await userModel.updateOne({_id}, data)
-    return {message: "done", statusCode: 200, data: {updateUser} }
+    if (findUser.bannedAt && action == "ban") {
+        throw new Error("this user already banned")
     }
-} 
+    const updateUser =  await userModel.findOneAndUpdate({_id}, data ,{new : true})
+    return {message: "done", statusCode: 200, data: updateUser }
+    }
+}

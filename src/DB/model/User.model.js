@@ -44,14 +44,14 @@ const userSchema = new Schema({
         default: genderTypes.male
         },
     provider:{
-            type:String,
-            enm: Object.values(providerTypes),
-            default:providerTypes.system
+        type:String,
+        enm: Object.values(providerTypes),
+        default:providerTypes.system
             },
     role:{
-    type:String,
-    enm: Object.values(roleTypes),
-    default:roleTypes.user
+        type:String,
+        enm: Object.values(roleTypes),
+        default:roleTypes.user
     },
 
     OTPExpiry: Date,

@@ -11,13 +11,13 @@ import cors from 'cors'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
 
-const AppLimiter = rateLimit({
-    limiter:1000,
-    windowMs: 5*60*1000,
-    message: " Please Try Again After 5 Minutes",
-    legacyHeaders: false,
-    standardHeaders: "draft-8"
-})
+// const AppLimiter = rateLimit({
+//     limiter:1000,
+//     windowMs: 5*60*1000,
+//     message: " Please Try Again After 5 Minutes",
+//     legacyHeaders: false,
+//     standardHeaders: "draft-8"
+// })
 
 const authlimiter = rateLimit({
     limiter:3,
@@ -30,7 +30,7 @@ const bootstrap = (app, express) => {
     app.use(express.json())
     app.use(helmet())
     app.use(cors())
-    app.use(AppLimiter)
+   // app.use(AppLimiter)
     app.use('/auth',authlimiter)
     
     
